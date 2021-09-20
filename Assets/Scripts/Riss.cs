@@ -9,21 +9,15 @@ public class Riss : InteractableBase
     {
         interactions.Add(new Interaction(InteractionType.LookAt, LookAt));
         interactions.Add(new Interaction(InteractionType.Touch, Touch));
-        interactions.Add(new Interaction(InteractionType.Translate, Translate));
     }
 
     private void LookAt()
     {
-        Debug.Log("Look At.");
+        Game.UIHandler.PromptHandler.Show(transform, "A crack in the wall.");
     }
 
     private void Touch()
     {
-        Debug.Log("Touch.");
-    }
-
-    private void Translate()
-    {
-        Debug.Log("Translate.");
+        Game.UIHandler.PromptHandler.Show(transform, "The crack reaches deep into the stone wall.");
     }
 }

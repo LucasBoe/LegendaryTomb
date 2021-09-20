@@ -14,7 +14,7 @@ public class WheelMenue : MonoBehaviour
 
     private List<WheelMenueElement> elements = new List<WheelMenueElement>();
 
-    public void Hide()
+    public void Hide(int indexToClickedOn = -1)
     {
         foreach (WheelMenueElement element in elements)
         {
@@ -69,7 +69,7 @@ public class WheelMenue : MonoBehaviour
                 float deltaAngle = Mathf.Abs(Mathf.DeltaAngle(Vector2.SignedAngle(inputVector2, Vector2.up), element.centerAngle));
                 element.SetHovered(1 - (deltaAngle / (360f / (float)elementCount)));
 
-                if (deltaAngle < (360f / (float)elementCount))
+                if (deltaAngle < (180f / (float)elementCount))
                     hoverIndex = element.index;
             } else
             {
@@ -78,9 +78,39 @@ public class WheelMenue : MonoBehaviour
         }
 
         if (Input.GetButtonDown("Fire1") && hoverIndex >= 0)
+        {
             ClickOn?.Invoke(hoverIndex);
+            Hide(hoverIndex);
+        }
 
         if (Input.GetButtonDown("Fire2") && Open)
             Hide();
+    }
+
+    private void OnGUI()
+    {
+        string str = "";
+
+        foreach (WheelMenueElement element in elements)
+        {
+            InputManager inputManager = Game.InputManager;
+
+            Vector2 inputVector2 = inputManager.IsControllerConnected() ? inputManager.GetJoystickVector2() : inputManager.GetMouseVector2(transform.position);
+
+            if (inputVector2.magnitude > 0f)
+            {
+                str += element.centerAngle;
+
+                float deltaAngle = Mathf.Abs(Mathf.DeltaAngle(Vector2.SignedAngle(inputVector2, Vector2.up), element.centerAngle));
+
+                if (deltaAngle < ((180f / (float)elements.Count)))
+                    str += " - " + deltaAngle;
+            }
+
+            str += "\n";
+        }
+
+
+        GUI.Box(new Rect(100, 100, 100, 100), str);
     }
 }
