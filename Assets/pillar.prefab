@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 8825857735072082656}
   - component: {fileID: 6062502994926308934}
   - component: {fileID: 1472134370370643667}
-  m_Layer: 0
-  m_Name: pillar 1
+  m_Layer: 7
+  m_Name: pillar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8825857735072082718}
-  m_Mesh: {fileID: 4300000, guid: ed68b8a4793f4f64ea4db8449064f45c, type: 2}
+  m_Mesh: {fileID: 0}
 --- !u!23 &8825857735072082656
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1448,9 +1448,9 @@ MonoBehaviour:
   editMode: 1
   recalculateTangents: 1
   serializedGuid: 
-  assetPath: Assets/tripolygon/UModeler/MeshAssets/1x1x2_pillar.asset
+  assetPath: 
   isInvisibleObject: 0
-  mainRenderableMesh: {fileID: 4300000, guid: ed68b8a4793f4f64ea4db8449064f45c, type: 2}
+  mainRenderableMesh: {fileID: 0}
   hotspotLayout: {fileID: 0}
   hotspotScale: 1
   hotspotPadding: 0
@@ -1467,5 +1467,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.002, y: 2.4710956, z: 1.0020001}
+  m_Size: {x: 1.002, y: 3, z: 1.0020001}
   m_Center: {x: -0.5, y: 1.2345479, z: 0.5}
