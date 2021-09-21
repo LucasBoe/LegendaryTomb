@@ -1,11 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InteractableBase : MonoBehaviour, IInteractable
 {
-    [SerializeField] protected List<Interaction> interactions = new List<Interaction>();
-
+    [SerializeField] protected InteractionList interactions = new InteractionList();
 
     private bool playerIsInTrigger = false;
 
@@ -23,10 +24,12 @@ public class InteractableBase : MonoBehaviour, IInteractable
 
     public void TryInteract(InteractionType type)
     {
-        foreach (Interaction interaction in interactions)
+        Interaction interaction = interactions.GetInteractionByType(type);
+
+        if (interaction != null)
         {
-            if (interaction.type == type)
-                interaction.function?.Invoke();
+            Debug.Log(type.ToString());
+            interaction.function?.Invoke();
         }
     }
 
@@ -49,7 +52,7 @@ public class InteractableBase : MonoBehaviour, IInteractable
 
     protected virtual void Update()
     {
-        if (!playerIsInTrigger)
+        if (!playerIsInTrigger || PlayerHandler.ActivePlayer.ActionManager.InAction)
             return;
 
         WheelMenue wheelMenue = Game.UIHandler.WheelMenu;
@@ -84,5 +87,30 @@ public class Interaction
     {
         this.type = type;
         this.function = function;
+    }
+}
+
+public class InteractionList : List<Interaction>
+{
+    public Interaction GetInteractionByType(InteractionType type)
+    {
+        foreach (Interaction interaction in this.Where(i => i.type == type))
+        {
+            return interaction;
+        }
+
+        return null;
+    }
+
+    public void OverrideFunction(InteractionType type, Action toOverride)
+    {
+        Interaction interaction = GetInteractionByType(type);
+        if (interaction != null)
+            interaction.function = toOverride;
+    }
+
+    public bool Contains(InteractionType type)
+    {
+        return GetInteractionByType(type) != null;
     }
 }

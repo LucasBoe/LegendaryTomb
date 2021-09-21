@@ -13,17 +13,31 @@ public class WallText : InteractableBase
 
     private void Touch()
     {
-        Game.UIHandler.PromptHandler.Show(PlayerHandler.ActivePlayer.transform, "This stone has been carefully encarved...");
+        PlayerUtility.Say("This stone has been carefully encarved...");
     }
 
     private void Translate()
     {
-        throw new NotImplementedException();
+        PlayerHandler.ActivePlayer.ActionManager.TryStart(new PlayerAction(InteractionType.Translate, 10, FinishedTranslation));
+    }
+
+    private void FinishedTranslation()
+    {
+        Read();
+        interactions.OverrideFunction(InteractionType.LookAt, Read);
+        interactions.OverrideFunction(InteractionType.Translate, delegate () { PlayerUtility.Say("I can read it already."); });
+    }
+
+    private void Read()
+    {
+        PlayerUtility.Say("The Text says: 'Danger! Hole in the center of the room!'.");
     }
 
     private void LookAt()
     {
-        Game.UIHandler.PromptHandler.Show(PlayerHandler.ActivePlayer.transform, "Looks like readable Text, I should be able to translate it.");
-        interactions.Add(new Interaction(InteractionType.Translate, Translate));
+        PlayerUtility.Say("Looks like readable Text, I should be able to translate it.");
+
+        if (!interactions.Contains(InteractionType.Translate))
+            interactions.Add(new Interaction(InteractionType.Translate, Translate));
     }
 }

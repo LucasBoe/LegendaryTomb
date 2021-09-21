@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: HealthBar_Mat
+  m_Shader: {fileID: -6465566751694194690, guid: 6865621df2f2d5748a66f3bd232e1082, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_0fbdcdd4c8934c93bb75296159b6600e: 0.5
+    m_Colors:
+    - Color_2e483baf52c04caf8cad56b1d0740e34: {r: 0.46226418, g: 0, b: 0, a: 0}
+    - Color_36f5de6612b74d9f87ebbe7146236f80: {r: 0.5849056, g: 0.029801315, b: 0, a: 0}
+    - Color_43ccaa2520b840fc8424bac1f3f39dbe: {r: 1, g: 0, b: 0.26299477, a: 0}
+  m_BuildTextureStacks: []

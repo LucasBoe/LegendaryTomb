@@ -24,6 +24,17 @@ public class PromptHandler : MonoBehaviour
         prompts.Add(newPrompt, target);
     }
 
+    internal void Hide(Transform target)
+    {
+        if (prompts.ContainsValue(target))
+        {
+            foreach (var element in prompts.Where(kvp => kvp.Value == target))
+            {
+                element.Key.Hide();
+            }
+        }
+    }
+
     internal void Unregister(Prompt prompt)
     {
         if (prompts.ContainsKey(prompt))
