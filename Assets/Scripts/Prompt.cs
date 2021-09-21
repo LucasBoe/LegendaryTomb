@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,15 +12,24 @@ public class Prompt : MonoBehaviour
 
     public void Init(string txt, Transform target)
     {
-        text.text = txt;
+        text.text = TextPrepper.Iconify(txt);
         this.target = target;
         Destroy(gameObject, 3);
+    }
+
+    internal void Hide()
+    {
+        Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        Game.UIHandler.PromptHandler.Unregister(this);
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = target.position + offset;
-        transform.forward = Camera.main.transform.forward;
+        transform.position = Camera.main.WorldToScreenPoint(target.position);
     }
 }

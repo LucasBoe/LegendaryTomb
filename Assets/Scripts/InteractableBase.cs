@@ -34,7 +34,7 @@ public class InteractableBase : MonoBehaviour, IInteractable
     {
         if (other.isPlayer())
         {
-            Game.UIHandler.PromptHandler.Show(transform, "press (A) to interact");
+            Game.UIHandler.PromptHandler.Show(transform, "press #Fire1 to interact");
             playerIsInTrigger = true;
         }
     }
@@ -54,7 +54,7 @@ public class InteractableBase : MonoBehaviour, IInteractable
 
         WheelMenue wheelMenue = Game.UIHandler.WheelMenu;
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonUp("Fire1"))
         {
 
             if (wheelMenue.Open == false)

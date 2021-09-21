@@ -13,11 +13,11 @@ public class Riss : InteractableBase
 
     private void LookAt()
     {
-        Game.UIHandler.PromptHandler.Show(transform, "A crack in the wall.");
+        Game.UIHandler.PromptHandler.Show(PlayerHandler.ActivePlayer.transform, "A crack in the wall.");
     }
 
     private void Touch()
     {
-        Game.UIHandler.PromptHandler.Show(transform, "The crack reaches deep into the stone wall.");
+        Game.UIHandler.PromptHandler.Show(PlayerHandler.ActivePlayer.transform, "The crack reaches deep into the stone wall.");
     }
 }
