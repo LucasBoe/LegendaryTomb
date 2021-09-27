@@ -13,40 +13,21 @@ public class TileworldRenderer : MonoBehaviour
     [SerializeField] MeshRenderer tilePrefab;
     [SerializeField] Material matFloor, matHWalls, matVWalls, matTransparent;
 
-    public void CreateRoom(Transform parent, Vector3Int[] roomTiles)
+    public void CreateRoom(Vector3Int[] roomTiles)
     {
         List<MeshRenderer> newMeshRenderers = new List<MeshRenderer>();
 
         foreach (Vector3Int newTile in roomTiles)
         {
-            MeshRenderer meshRenderer = Instantiate(tilePrefab, newTile, Quaternion.identity, parent);
-            UpdateMeshRendererAccordingToNeightbours(meshRenderer, newTile, roomTiles);
-        }
-    }
+            int x = newTile.x / 2;
+            int y = newTile.y / 2;
+            int z = newTile.z / 2;
 
-    private void UpdateMeshRendererAccordingToNeightbours(MeshRenderer meshRenderer, Vector3Int tile, Vector3Int[] otherTiles)
-    {
-        Material[] materials = meshRenderer.sharedMaterials;
-
-        if (otherTiles.Contains(tile + Vector3Int.down * 2))
-        {
-            materials[2] = matTransparent;
-            DestroyImmediate(meshRenderer.GetComponent<BoxCollider>());
-            tile = tile + Vector3Int.down * 2;
-        }
-        else
-        {
-            materials[2] = matFloor;
+            world[x, y, z].Air = true;
+            world[x, y, z].Visible = true;
         }
 
-
-
-        materials[4] = otherTiles.Contains(tile + Vector3Int.back * 2) ? matTransparent : matHWalls;
-        materials[3] = otherTiles.Contains(tile + Vector3Int.left * 2) ? matTransparent : matVWalls;
-        materials[0] = otherTiles.Contains(tile + Vector3Int.forward * 2) ? matTransparent : matHWalls;
-        materials[1] = otherTiles.Contains(tile + Vector3Int.right * 2) ? matTransparent : matVWalls;
-
-        meshRenderer.sharedMaterials = materials;
+        UpdateAllTiles();
     }
 
     internal void CreateRoom(Transform parent, List<Vector3Int> tilesTouched, List<Vector3Int> tilesFilled, int stories)
@@ -62,10 +43,8 @@ public class TileworldRenderer : MonoBehaviour
                 list.Add(touched + Vector3Int.up * 2 * i);
             }
         }
-        Debug.LogError("d");
-
-
-        CreateRoom(parent, list.ToArray());
+   
+        CreateRoom(list.ToArray());
     }
 
     [Button]
@@ -87,12 +66,12 @@ public class TileworldRenderer : MonoBehaviour
     {
         Tile tile = world[x, y, z];
 
+        if (tile.Air && tile.MeshRenderer == null)
+            tile.MeshRenderer = Instantiate(tilePrefab, Tile.ToVector(x, y, z), Quaternion.identity, transform);
 
-        if (tile.Visible)
+
+        if (tile.Air && tile.Visible)
         {
-            if (tile.MeshRenderer == null)
-                tile.MeshRenderer = Instantiate(tilePrefab, Tile.ToVector(x, y, z), Quaternion.identity, transform);
-
             tile.MeshRenderer.gameObject.SetActive(true);
 
             Material[] materials = tile.MeshRenderer.sharedMaterials;
@@ -136,34 +115,22 @@ public class TileworldRenderer : MonoBehaviour
             return;
         }
 
-        /*
-        for (int x = 0; x < TileworldData.xSize; x++)
-        {
-            for (int y = 0; y < TileworldData.ySize; y++)
-            {
-                for (int z = 0; z < TileworldData.zSize; z++)
-                {
-                    Tile tile = world.GetTile(x,y,z);
-                    if (tile != null && tile.Air)
-                    {
-                        Gizmos.color = tile.Type == TileType.Tomb ? Color.yellow : Color.white;
-                        Gizmos.DrawCube(Tile.ToVector(x, y, z), Vector3.one * 2);
-                    }
-
-                    i++;
-                }
-            }
-        }
-        */
+        int count = 0;
 
         for (int i = 0; i < world.Tiles.Length; i++)
         {
             Tile tile = world.Tiles[i];
             if (tile != null && tile.Air)
             {
+                count++;
                 Gizmos.color = tile.Type == TileType.Tomb ? Color.yellow : Color.white;
                 Gizmos.DrawCube(world[i], Vector3.one * 2);
             }
         }
+
+        Debug.Log("count: " + count);
+
+        Gizmos.DrawWireCube(new Vector3(TileworldData.xSize / 2, TileworldData.ySize / 2, TileworldData.zSize / 2), new Vector3(TileworldData.xSize, TileworldData.ySize, TileworldData.zSize));
     }
+
 }

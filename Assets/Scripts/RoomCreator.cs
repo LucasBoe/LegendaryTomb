@@ -105,4 +105,9 @@ public class RoomCreator : MonoBehaviour
     {
         return Mathf.RoundToInt(x * 0.5f) * 2;
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireCube(new Vector3(TileworldData.xSize / 2, TileworldData.ySize / 2, TileworldData.zSize / 2), new Vector3(TileworldData.xSize, TileworldData.ySize, TileworldData.zSize));
+    }
 }
