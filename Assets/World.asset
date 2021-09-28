@@ -52151,27 +52151,7 @@ MonoBehaviour:
     MeshRenderer: {fileID: 0}
   - Type: 0
     Air: 0
-    Visible: 1
-    MeshRenderer: {fileID: 0}
-  - Type: 0
-    Air: 0
-    Visible: 1
-    MeshRenderer: {fileID: 0}
-  - Type: 0
-    Air: 0
-    Visible: 1
-    MeshRenderer: {fileID: 0}
-  - Type: 0
-    Air: 0
-    Visible: 1
-    MeshRenderer: {fileID: 0}
-  - Type: 0
-    Air: 0
-    Visible: 1
-    MeshRenderer: {fileID: 0}
-  - Type: 0
-    Air: 0
-    Visible: 1
+    Visible: 0
     MeshRenderer: {fileID: 0}
   - Type: 0
     Air: 0
@@ -55894,27 +55874,7 @@ MonoBehaviour:
     Visible: 1
     MeshRenderer: {fileID: 0}
   - Type: 0
-    Air: 0
-    Visible: 1
-    MeshRenderer: {fileID: 0}
-  - Type: 0
-    Air: 0
-    Visible: 1
-    MeshRenderer: {fileID: 0}
-  - Type: 0
-    Air: 0
-    Visible: 1
-    MeshRenderer: {fileID: 0}
-  - Type: 0
-    Air: 0
-    Visible: 1
-    MeshRenderer: {fileID: 0}
-  - Type: 0
-    Air: 0
-    Visible: 1
-    MeshRenderer: {fileID: 0}
-  - Type: 0
-    Air: 0
+    Air: 1
     Visible: 1
     MeshRenderer: {fileID: 0}
   - Type: 0
@@ -74535,7 +74495,7 @@ MonoBehaviour:
     MeshRenderer: {fileID: 0}
   - Type: 0
     Air: 0
-    Visible: 1
+    Visible: 0
     MeshRenderer: {fileID: 0}
   - Type: 0
     Air: 0
@@ -108013,7 +107973,6 @@ MonoBehaviour:
     Air: 0
     Visible: 1
     MeshRenderer: {fileID: 0}
-  Test:
   - Type: 0
     Air: 0
     Visible: 1
@@ -108054,7 +108013,7 @@ MonoBehaviour:
     Air: 0
     Visible: 1
     MeshRenderer: {fileID: 0}
-  locationToSet: {x: 0, y: 0, z: 0}
+  locationToSet: {x: 20, y: 20, z: 20}
   airToSet: 0
   visibleToSet: 0
   typeToSet: 0

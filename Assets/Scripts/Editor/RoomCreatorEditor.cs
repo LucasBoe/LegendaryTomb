@@ -35,20 +35,33 @@ public class RoomCreatorEditor : Editor
 
         EditorGUI.BeginChangeCheck();
 
-        for (int i = 0; i < sceneTarget.cornerpoints.Length; i++)
+        if (sceneTarget.Mode == RoomCreatorMode.Room)
+        {
+            for (int i = 0; i < sceneTarget.cornerpoints.Length; i++)
+            {
+                EditorGUI.BeginChangeCheck();
+                Vector3 newTargetPosition = Handles.PositionHandle(sceneTarget.cornerpoints[i], Quaternion.identity);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    Undo.RecordObject(sceneTarget, "Change Position");
+                    sceneTarget.cornerpoints[i] = newTargetPosition;
+                }
+
+                Vector3 current = sceneTarget.cornerpoints[i];
+                Vector3 next = i + 1 >= sceneTarget.cornerpoints.Length ? sceneTarget.cornerpoints[0] : sceneTarget.cornerpoints[i + 1];
+
+                Handles.DrawDottedLine(current, next, 10);
+            }
+        }
+        else
         {
             EditorGUI.BeginChangeCheck();
-            Vector3 newTargetPosition = Handles.PositionHandle(sceneTarget.cornerpoints[i], Quaternion.identity);
+            Vector3 newTargetPosition = Handles.PositionHandle(sceneTarget.cornerpoints[0], Quaternion.identity);
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(sceneTarget, "Change Position");
-                sceneTarget.cornerpoints[i] = newTargetPosition;
+                sceneTarget.cornerpoints[0] = newTargetPosition;
             }
-
-            Vector3 current = sceneTarget.cornerpoints[i];
-            Vector3 next = i + 1 >= sceneTarget.cornerpoints.Length ? sceneTarget.cornerpoints[0] : sceneTarget.cornerpoints[i + 1];
-
-            Handles.DrawDottedLine(current, next , 10);
         }
 
         sceneTarget.UpdateTouchingTiles();
@@ -63,9 +76,12 @@ public class RoomCreatorEditor : Editor
 
         Handles.color = Color.yellow;
 
-        foreach (Vector3Int tile in sceneTarget.tilesFilled)
+        if (sceneTarget.fill)
         {
-            Handles.DrawWireCube(tile, new Vector3(2, 0.2f, 2));
+            foreach (Vector3Int tile in sceneTarget.tilesFilled)
+            {
+                Handles.DrawWireCube(tile, new Vector3(2, 0.2f, 2));
+            }
         }
     }
 }

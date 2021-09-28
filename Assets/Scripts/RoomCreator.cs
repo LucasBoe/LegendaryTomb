@@ -3,12 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum RoomCreatorMode
+{
+    Room,
+    Single,
+}
+
 [ExecuteInEditMode]
 public class RoomCreator : MonoBehaviour
 {
     [SerializeField] TileworldRenderer tileworldRenderer;
 
     public int stories = 1;
+    public bool fill = false;
+    public RoomCreatorMode Mode;
+
     public Vector3[] cornerpoints;
     public List<Vector3Int> tilesTouched = new List<Vector3Int>();
     public List<Vector3Int> tilesFilled = new List<Vector3Int>();
@@ -56,8 +65,10 @@ public class RoomCreator : MonoBehaviour
 
     public void CreateRoom()
     {
-        GameObject newRoom = new GameObject("ROOM_");
-        tileworldRenderer.CreateRoom(newRoom.transform, tilesTouched, tilesFilled, stories: stories);
+        if (fill)
+            tileworldRenderer.CreateRoom(tilesTouched, tilesFilled, stories: stories);
+        else
+            tileworldRenderer.CreateRoom(tilesTouched, stories: stories);
     }
 
     private void FillRecursively(Vector3Int self)
@@ -108,6 +119,6 @@ public class RoomCreator : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireCube(new Vector3(TileworldData.xSize / 2, TileworldData.ySize / 2, TileworldData.zSize / 2), new Vector3(TileworldData.xSize, TileworldData.ySize, TileworldData.zSize));
+        Gizmos.DrawWireCube(new Vector3(TileworldData.xSize, TileworldData.ySize, TileworldData.zSize), new Vector3(TileworldData.xSize * 2, TileworldData.ySize * 2, TileworldData.zSize * 2));
     }
 }

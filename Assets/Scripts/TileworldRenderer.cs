@@ -30,7 +30,23 @@ public class TileworldRenderer : MonoBehaviour
         UpdateAllTiles();
     }
 
-    internal void CreateRoom(Transform parent, List<Vector3Int> tilesTouched, List<Vector3Int> tilesFilled, int stories)
+    internal void CreateRoom(List<Vector3Int> tilesTouched, int stories)
+    {
+        List<Vector3Int> list = new List<Vector3Int>();
+        list.AddRange(tilesTouched);
+
+        for (int i = 0; i < stories; i++)
+        {
+            foreach (Vector3Int touched in tilesTouched)
+            {
+                list.Add(touched + Vector3Int.up * 2 * i);
+            }
+        }
+
+        CreateRoom(list.ToArray());
+    }
+
+    internal void CreateRoom(List<Vector3Int> tilesTouched, List<Vector3Int> tilesFilled, int stories)
     {
         List<Vector3Int> list = new List<Vector3Int>();
         list.AddRange(tilesFilled);
@@ -130,7 +146,7 @@ public class TileworldRenderer : MonoBehaviour
 
         Debug.Log("count: " + count);
 
-        Gizmos.DrawWireCube(new Vector3(TileworldData.xSize / 2, TileworldData.ySize / 2, TileworldData.zSize / 2), new Vector3(TileworldData.xSize, TileworldData.ySize, TileworldData.zSize));
+        Gizmos.DrawWireCube(new Vector3(TileworldData.xSize, TileworldData.ySize, TileworldData.zSize), new Vector3(TileworldData.xSize * 2, TileworldData.ySize * 2, TileworldData.zSize * 2));
     }
 
 }

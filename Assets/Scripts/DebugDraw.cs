@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class DebugDraw
 {
-    public static void Cuboid(Bounds bounds, Color color)
+    public static void Cuboid(Bounds bounds, Color color, float duration = -1)
     {
         Vector3[] points = new Vector3[8];
 
@@ -37,7 +37,10 @@ public static class DebugDraw
             Vector3 self = points[edges[i]];
             Vector3 other = points[edges[i + 1]];
 
-            Debug.DrawLine(self, other, color);
+            if (duration == -1)
+                Debug.DrawLine(self, other, color);
+            else
+                Debug.DrawLine(self, other, color, duration);
         }
     }
 }

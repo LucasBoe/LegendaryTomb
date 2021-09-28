@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WallsV_Mat
+  m_Name: Cave_Mat
   m_Shader: {fileID: -6465566751694194690, guid: 8da8b1bfe3983264486bb74f14bccdb4, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -20,7 +20,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_5c5514e99d324aa39e68d1f38a58a9a1:
-        m_Texture: {fileID: 2800000, guid: ceae23277040dfc42b4519a3dcadd440, type: 3}
+        m_Texture: {fileID: 2800000, guid: 257f4e5934030bd48aa28a459b9abcbe, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_a1df98b1e324415c8d091feb10952f50:
+        m_Texture: {fileID: 2800000, guid: 642d64b2c69b9de4a98ec2495c165526, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
