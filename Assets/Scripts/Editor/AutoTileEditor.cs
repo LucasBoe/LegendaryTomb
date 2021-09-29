@@ -24,6 +24,9 @@ public class AutoTileEditor : Editor
             GUIUtility.GetControlID(FocusType.Passive),
             GUIUtility.GetControlID(FocusType.Passive)
         };
+
+        sceneTarget = (AutoTile)target;
+        sceneTarget.UpdateNeightbours();
     }
 
     void OnDisable()
@@ -33,19 +36,35 @@ public class AutoTileEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        sceneTarget = (AutoTile)target;
         GUILayout.BeginHorizontal();
         for (int i = 0; i < 3; i++)
-        {
             HandleButton(i);
-        }
+
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
         for (int i = 3; i < 6; i++)
-        {
             HandleButton(i);
-        }
+  
         GUILayout.EndHorizontal();
+
+        GUILayout.Space(4);
+
+        int tileTypeIndex = (int)sceneTarget.Type;
+
+        List<string> names = new List<string>();
+        foreach (var value in Enum.GetValues(typeof(TileType)))
+            names.Add(value.ToString());
+
+        int newTileTypeIndex = GUILayout.Toolbar(tileTypeIndex, names.ToArray());
+
+        if (newTileTypeIndex != tileTypeIndex)
+        {
+            sceneTarget.Type = (TileType)newTileTypeIndex;
+            sceneTarget.UpdateNeightboursNeightbours();
+        }
+
+        GUILayout.Space(4);
+
         if (GUILayout.Button("UpdateNeightbours"))
         {
             sceneTarget.UpdateNeightbours();
@@ -56,7 +75,14 @@ public class AutoTileEditor : Editor
     private void HandleButton(int index)
     {
         AutoTileDirection dir = AutoTileDirection.List[index];
-        bool clicked = GUILayout.Button(dir.Symbol + (sceneTarget.Neightbours.ContainsKey(dir.Direction) ? "" : " (null)"));
+        bool tileExists = sceneTarget.Neightbours.ContainsKey(dir.Direction);
+        if (GUILayout.Button(dir.Symbol + (tileExists ? "" : " (null)")))
+        {
+            if (tileExists)
+                Select(sceneTarget.Neightbours[dir.Direction]);
+            else
+                Expand(dir.Direction);
+        }
     }
 
     public void OnSceneGUI()

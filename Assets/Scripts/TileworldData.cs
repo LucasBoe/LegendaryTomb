@@ -79,4 +79,5 @@ public enum TileType
 {
     Tomb,
     Cave,
+    Solid,
 }
