@@ -121,7 +121,7 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - direction: -0.125
+    - direction: -0.24284558
     m_Colors:
     - Color_2d49e5733d4d436289ab3a4b2901ccd0: {r: 0.8773585, g: 0.8773585, b: 0.8773585, a: 1}
     - Vector2_a633720ba5b242f486784aadead14aea: {r: 0, g: 0, b: 0, a: 0}
