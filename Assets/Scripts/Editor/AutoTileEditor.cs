@@ -95,7 +95,6 @@ public class AutoTileEditor : Editor
             bool exists = sceneTarget.Neightbours.ContainsKey(dir.Direction);
             Handles.color = exists ? Color.yellow : Color.red;
 
-
             EventType current = Event.current.type;
             if (current == EventType.Repaint || current == EventType.Layout)
             {
@@ -136,11 +135,11 @@ public class AutoTileEditor : Editor
         if (exists)
         {
             if (dir.Direction != Vector3.up && dir.Direction != Vector3.down)
-                Handles.CircleHandleCap(controllId[controlIdIndex], sceneTarget.transform.position + dir.Direction + Vector3.down, Quaternion.LookRotation(dir.Direction), 0.1f, type);
+                Handles.SphereHandleCap(controllId[controlIdIndex], sceneTarget.transform.position + dir.Direction + Vector3.down, Quaternion.LookRotation(dir.Direction), 0.25f, type);
         }
         else
         {
-            Handles.ArrowHandleCap(controllId[controlIdIndex], sceneTarget.transform.position + dir.Direction, Quaternion.LookRotation(dir.Direction), 1f, type);
+            Handles.ArrowHandleCap(controllId[controlIdIndex], sceneTarget.transform.position + dir.Direction, Quaternion.LookRotation(dir.Direction), 0.5f, type);
         }
     }
 }
