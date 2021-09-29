@@ -50,6 +50,9 @@ MonoBehaviour:
   matWalls: {fileID: 2100000, guid: 296e1530af3a3f041852c201d8e9991b, type: 2}
   matCave: {fileID: 2100000, guid: a3ca66ed1197df649be52dc8037da2d4, type: 2}
   matTransparent: {fileID: 2100000, guid: 446a24ab6af51124e86f61a221f32d60, type: 2}
+  meshRenderer: {fileID: 7707541604634633793}
+  Type: 0
+  Air: 1
 --- !u!33 &4798528262869626200
 MeshFilter:
   m_ObjectHideFlags: 0

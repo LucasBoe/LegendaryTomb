@@ -35,6 +35,14 @@ public class Game : MonoBehaviour
         }
     }
 
+    public static AutoTileHandler AutoTileHandler
+    {
+        get
+        {
+            return AutoTileHandler.GetInstance();
+        }
+    }
+
     public static Game GetInstance()
     {
         return Instance;

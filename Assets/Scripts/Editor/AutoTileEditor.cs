@@ -49,6 +49,9 @@ public class AutoTileEditor : Editor
 
         GUILayout.Space(4);
 
+
+        GUILayout.BeginHorizontal();
+
         int tileTypeIndex = (int)sceneTarget.Type;
 
         List<string> names = new List<string>();
@@ -62,6 +65,16 @@ public class AutoTileEditor : Editor
             sceneTarget.Type = (TileType)newTileTypeIndex;
             sceneTarget.UpdateNeightboursNeightbours();
         }
+
+        bool newAir = GUILayout.Toggle(sceneTarget.Air, "Is Digged Out");
+
+        if (newAir != sceneTarget.Air)
+        {
+            sceneTarget.Air = newAir;
+            sceneTarget.UpdateNeightboursNeightbours();
+        }
+
+        GUILayout.EndHorizontal();
 
         GUILayout.Space(4);
 

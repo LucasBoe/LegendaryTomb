@@ -8,10 +8,16 @@ using UnityEngine;
 public class AutoTile : MonoBehaviour
 {
     [SerializeField] Material matFloor, matWalls, matCave, matTransparent;
+    [SerializeField] MeshRenderer meshRenderer;
 
     public Dictionary<Vector3, AutoTile> Neightbours = new Dictionary<Vector3, AutoTile>();
-    [OnValueChanged("OnTypeChangedCallback")]
-    public TileType Type;
+    [HideInInspector] public TileType Type;
+    [HideInInspector] public bool Air = true;
+
+    private void Awake()
+    {
+        Game.AutoTileHandler.Register(this);
+    }
 
     private void Start()
     {
@@ -20,43 +26,58 @@ public class AutoTile : MonoBehaviour
 
     public void UpdateNeightbours()
     {
-        Neightbours.Clear();
+        //Neightbours = DectedNeightboursByCollider();
+        Neightbours = Game.AutoTileHandler.FetchNeightbours(transform.position);
+
+        DebugDraw.Cuboid(new Bounds(transform.position + Vector3.down, Vector3.one * 0.1f), Color.gray, 0.5f);
+
+        if (Air)
+        {
+            gameObject.layer = LayerMask.NameToLayer("Walkable");
+            meshRenderer.enabled = true;
+            Material[] materials = meshRenderer.sharedMaterials;
+            meshRenderer.sharedMaterials = UpdateMaterialsBasedOnNeightbours(materials);
+        }
+        else
+        {
+            gameObject.layer = LayerMask.NameToLayer("Digable");
+            meshRenderer.enabled = false;
+        }
+    }
+
+    private Dictionary<Vector3, AutoTile> DectedNeightboursByCollider()
+    {
+        Dictionary<Vector3, AutoTile> neightboursDict = new Dictionary<Vector3, AutoTile>();
 
         foreach (Collider collider in Physics.OverlapSphere(transform.position + Vector3.down, 2))
         {
-            Debug.Log("Hit..." + collider);
-
-
             AutoTile autoTile = collider.GetComponent<AutoTile>();
-            if (autoTile != null && autoTile != this && !Neightbours.ContainsValue(autoTile))
+            if (autoTile != null && autoTile != this && !neightboursDict.ContainsValue(autoTile))
             {
                 Vector3 direction = (autoTile.transform.position - transform.position).normalized;
-                if (!Neightbours.ContainsKey(direction) && AutoTileDirection.IsAllowed(direction))
+                if (!neightboursDict.ContainsKey(direction) && AutoTileDirection.IsAllowed(direction))
                 {
-                    Neightbours.Add(direction, autoTile);
+                    neightboursDict.Add(direction, autoTile);
                     Debug.DrawLine(transform.position + Vector3.down, collider.transform.position + Vector3.down, Color.gray, 0.1f);
                 }
             }
         }
 
-        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-        Material[] materials = meshRenderer.sharedMaterials;
+        return neightboursDict;
+    }
 
+    private Material[] UpdateMaterialsBasedOnNeightbours(Material[] materials)
+    {
         foreach (var direction in AutoTileDirection.List)
         {
-
             bool hasNeightbour = Neightbours.ContainsKey(direction.Direction);
             AutoTile neightbour = hasNeightbour ? Neightbours[direction.Direction] : null;
 
-            Debug.Log("check direction has neightbour:" + hasNeightbour);
-
             if (direction.MaterialIndex != -1)
-                materials[direction.MaterialIndex] = (hasNeightbour) ? matTransparent : GetMaterial(neightbour, direction);
+                materials[direction.MaterialIndex] = (hasNeightbour && neightbour.Air) ? matTransparent : GetMaterial(neightbour, direction);
         }
 
-        DebugDraw.Cuboid(new Bounds(transform.position + Vector3.down, Vector3.one * 0.1f), Color.gray, 0.5f);
-
-        meshRenderer.sharedMaterials = materials;
+        return materials;
     }
 
     private Material GetMaterial(AutoTile neightbour, AutoTileDirection direction)
@@ -76,9 +97,14 @@ public class AutoTile : MonoBehaviour
         }
     }
 
-    public void OnTypeChangedCallback()
+
+    private void OnDrawGizmos()
     {
-        UpdateNeightboursNeightbours();
+        if (!Air)
+        {
+            Gizmos.color = Color.black;
+            Gizmos.DrawCube(transform.position, Vector3.one * 1.95f);
+        }
     }
 }
 

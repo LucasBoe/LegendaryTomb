@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] LayerMask walkable;
+    [SerializeField] LayerMask obstacle;
     [SerializeField] float maxSpeed = 10, accelerationMultiplier = 0.5f;
 
     public Vector3 direction;
@@ -38,9 +39,9 @@ public class PlayerController : MonoBehaviour
 
             int layer = hit.collider.gameObject.layer;
 
-            if (layer == LayerMask.NameToLayer("Walkable"))
+            if (walkable.Contains(layer))
                 groundInFront = true;
-            else if (layer == LayerMask.NameToLayer("Obstacle"))
+            else if (obstacle.Contains(layer))
                 obstacleInFront = true;
         }
 

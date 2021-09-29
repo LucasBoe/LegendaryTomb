@@ -35,7 +35,7 @@ public class InteractableBase : MonoBehaviour, IInteractable
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.isPlayer())
+        if (other.IsPlayer())
         {
             Game.UIHandler.PromptHandler.Show(transform, "press #Fire1 to interact");
             playerIsInTrigger = true;
@@ -44,7 +44,7 @@ public class InteractableBase : MonoBehaviour, IInteractable
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.isPlayer())
+        if (other.IsPlayer())
         {
             playerIsInTrigger = false;
         }
