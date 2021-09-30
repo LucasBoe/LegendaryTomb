@@ -13,6 +13,7 @@ public class AutoTile : MonoBehaviour
     public Dictionary<Vector3, AutoTile> Neightbours = new Dictionary<Vector3, AutoTile>();
     [HideInInspector] public TileType Type;
     [HideInInspector] public bool Air = true;
+    [HideInInspector] public bool Visible = true;
 
     private void Awake()
     {
@@ -31,19 +32,55 @@ public class AutoTile : MonoBehaviour
         else
             Neightbours = DectedNeightboursByCollider();
 
+        if (!Visible && Application.isPlaying)
+            UpdateVisibility();
+
         DebugDraw.Cuboid(new Bounds(transform.position + Vector3.down, Vector3.one * 0.1f), Color.gray, 0.5f);
 
-        if (Air)
+        if (Air && Visible)
         {
-            gameObject.layer = LayerMask.NameToLayer("Walkable");
-            meshRenderer.enabled = true;
+            SetVisualsActive(true);
+
             Material[] materials = meshRenderer.sharedMaterials;
             meshRenderer.sharedMaterials = UpdateMaterialsBasedOnNeightbours(materials);
         }
         else
         {
+            SetVisualsActive(false);
             gameObject.layer = LayerMask.NameToLayer("Digable");
-            meshRenderer.enabled = false;
+        }
+    }
+
+    public void UpdateVisibility()
+    {
+        foreach (var direction in AutoTileDirection.List)
+        {
+            if (Neightbours.ContainsKey(direction.Direction))
+            {
+                AutoTile tile = Neightbours[direction.Direction];
+                if (tile.Air && tile.Visible)
+                {
+                    DebugDraw.Cuboid(new Bounds(transform.position, Vector3.one), Color.white, 0.1f);
+                    Visible = true;
+                }
+            }
+        }
+
+        if (Visible)
+        {
+            foreach (AutoTile tile in Neightbours.Values)
+            {
+                tile.UpdateNeightbours();
+            }
+        }
+    }
+
+    private void SetVisualsActive(bool active)
+    {
+        meshRenderer.enabled = active;
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(active);
         }
     }
 
@@ -75,8 +112,10 @@ public class AutoTile : MonoBehaviour
             bool hasNeightbour = Neightbours.ContainsKey(direction.Direction);
             AutoTile neightbour = hasNeightbour ? Neightbours[direction.Direction] : null;
 
+            gameObject.layer = LayerMask.NameToLayer(!(direction.Direction == Vector3.down && hasNeightbour) ? "Walkable" : "Obstacle");
+
             if (direction.MaterialIndex != -1)
-                materials[direction.MaterialIndex] = (hasNeightbour && neightbour.Air) ? matTransparent : GetMaterial(neightbour, direction);
+                materials[direction.MaterialIndex] = (hasNeightbour && neightbour.Air && neightbour.Visible) ? matTransparent : GetMaterial(neightbour, direction);
         }
 
         return materials;
@@ -116,8 +155,14 @@ public class AutoTile : MonoBehaviour
     {
         if (!Air)
         {
+            Gizmos.color = Color.gray;
+            Gizmos.DrawCube(transform.position, Vector3.one * 1.99f);
+        }
+
+        if (!Visible)
+        {
             Gizmos.color = Color.black;
-            Gizmos.DrawCube(transform.position, Vector3.one * 1.95f);
+            Gizmos.DrawCube(transform.position, Vector3.one * 1.99f);
         }
     }
 }

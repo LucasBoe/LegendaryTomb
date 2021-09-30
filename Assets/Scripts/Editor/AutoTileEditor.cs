@@ -74,6 +74,14 @@ public class AutoTileEditor : Editor
             sceneTarget.UpdateNeightboursNeightbours();
         }
 
+        bool newVisible = GUILayout.Toggle(sceneTarget.Visible, "Visible");
+
+        if (newVisible != sceneTarget.Visible)
+        {
+            sceneTarget.Visible = newVisible;
+            sceneTarget.UpdateNeightboursNeightbours();
+        }
+
         GUILayout.EndHorizontal();
 
         GUILayout.Space(4);

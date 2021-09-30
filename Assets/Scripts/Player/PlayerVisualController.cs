@@ -20,7 +20,7 @@ public class PlayerVisualController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float direction = Vector3.SignedAngle(Vector3.right, playerController.direction, Vector3.up) / 360f;
+        float direction = Vector3.SignedAngle(Vector3.right, playerController.Direction, Vector3.up) / 360f;
         matPlayer.SetFloat("direction", direction);
         plane.localPosition = Vector3.up * Mathf.Sin(Time.time * 6) * 0.1f;
 

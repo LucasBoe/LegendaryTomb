@@ -63,7 +63,7 @@ public class AutoTileHandler : Singleton<AutoTileHandler>
         return false;
     }
 
-    private Vector3Int WorldSpaceToRegistry(Vector3 input)
+    public static Vector3Int WorldSpaceToRegistry(Vector3 input)
     {
         return new Vector3Int(
             Mathf.RoundToInt(input.x / 2f) + size,
@@ -71,7 +71,7 @@ public class AutoTileHandler : Singleton<AutoTileHandler>
             Mathf.RoundToInt(input.z / 2f) + size);
     }
 
-    private Vector3Int RegistrySpaceToWorld(Vector3Int input)
+    public static Vector3Int RegistrySpaceToWorld(Vector3Int input)
     {
         Vector3Int output = (input - new Vector3Int(size, size, size)) * 2;
         return output;
