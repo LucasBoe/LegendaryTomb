@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 
     Vector3 velocity = Vector3.zero;
     Vector3 rotationVelocity = Vector3.zero;
+    AutoTile currentDigTarget;
 
     private void Update()
     {
@@ -32,18 +33,24 @@ public class PlayerController : MonoBehaviour
 
         bool groundInFront = false;
         bool obstacleInFront = false;
+        AutoTile digTarget = null;
 
         Ray ray = new Ray(transform.position + (direction * 0.1f) + Vector3.up, Vector3.down - direction * 0.6f);
-        foreach (RaycastHit hit in Physics.RaycastAll(ray, 2, LayerMask.GetMask("Walkable", "Obstacle")))
+        foreach (RaycastHit hit in Physics.RaycastAll(ray, 2, LayerMask.GetMask("Walkable", "Obstacle", "Digable")))
         {
 
             int layer = hit.collider.gameObject.layer;
+
+            if (LayerMask.NameToLayer("Digable") == layer)
+                digTarget = hit.collider.GetComponent<AutoTile>();
 
             if (walkable.Contains(layer))
                 groundInFront = true;
             else if (obstacle.Contains(layer))
                 obstacleInFront = true;
         }
+
+        UpdateDigTarget(digTarget);
 
         if (groundInFront && !obstacleInFront)
         {
@@ -53,6 +60,26 @@ public class PlayerController : MonoBehaviour
         else
         {
             Debug.DrawRay(ray.origin, ray.direction, Color.red);
+        }
+    }
+
+    private void UpdateDigTarget(AutoTile newDigTarget)
+    {
+        if (newDigTarget != currentDigTarget)
+        {
+            if (newDigTarget != null)
+                Game.UIHandler.PromptHandler.Show(newDigTarget.transform, "press #Fire1 to dig");
+            else
+                Game.UIHandler.PromptHandler.Hide(currentDigTarget.transform);
+            currentDigTarget = newDigTarget;
+        }
+
+        if (currentDigTarget != null)
+        {
+            if (Input.GetButtonUp("Fire1"))
+            {
+                currentDigTarget.StartDig();
+            }
         }
     }
 }

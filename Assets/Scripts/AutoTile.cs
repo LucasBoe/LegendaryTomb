@@ -26,8 +26,10 @@ public class AutoTile : MonoBehaviour
 
     public void UpdateNeightbours()
     {
-        //Neightbours = DectedNeightboursByCollider();
-        Neightbours = Game.AutoTileHandler.FetchNeightbours(transform.position);
+        if (Application.isPlaying)
+            Neightbours = Game.AutoTileHandler.FetchNeightbours(transform.position);
+        else
+            Neightbours = DectedNeightboursByCollider();
 
         DebugDraw.Cuboid(new Bounds(transform.position + Vector3.down, Vector3.one * 0.1f), Color.gray, 0.5f);
 
@@ -78,6 +80,18 @@ public class AutoTile : MonoBehaviour
         }
 
         return materials;
+    }
+
+    public void StartDig()
+    {
+        PlayerAction digAction = new PlayerAction(InteractionType.Touch, 3, FinishDig);
+        PlayerHandler.ActivePlayer.ActionManager.TryStart(digAction);
+    }
+
+    private void FinishDig()
+    {
+        Air = true;
+        UpdateNeightboursNeightbours();
     }
 
     private Material GetMaterial(AutoTile neightbour, AutoTileDirection direction)

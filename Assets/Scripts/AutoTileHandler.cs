@@ -45,7 +45,7 @@ public class AutoTileHandler : Singleton<AutoTileHandler>
             AutoTile fetch = Fetch(pos);
 
             if (fetch != null)
-                d.Add(pos, fetch);
+                d.Add(dir.Direction, fetch);
         }
 
         return d;
@@ -73,6 +73,7 @@ public class AutoTileHandler : Singleton<AutoTileHandler>
 
     private Vector3Int RegistrySpaceToWorld(Vector3Int input)
     {
-        return (input - new Vector3Int(100, 100, 100)) * 2;
+        Vector3Int output = (input - new Vector3Int(size, size, size)) * 2;
+        return output;
     }
 }

@@ -44,7 +44,7 @@ public class AutoTileEditor : Editor
         GUILayout.BeginHorizontal();
         for (int i = 3; i < 6; i++)
             HandleButton(i);
-  
+
         GUILayout.EndHorizontal();
 
         GUILayout.Space(4);
@@ -74,6 +74,16 @@ public class AutoTileEditor : Editor
             sceneTarget.UpdateNeightboursNeightbours();
         }
 
+        GUILayout.EndHorizontal();
+
+        GUILayout.Space(4);
+
+        GUILayout.BeginHorizontal();
+        foreach (var keyValuePair in sceneTarget.Neightbours)
+        {
+            if (GUILayout.Button(keyValuePair.Key.ToString()))
+                Selection.activeObject = keyValuePair.Value;
+        }
         GUILayout.EndHorizontal();
 
         GUILayout.Space(4);
