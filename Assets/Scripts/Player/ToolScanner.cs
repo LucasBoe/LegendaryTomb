@@ -7,6 +7,8 @@ public class ToolScanner : MonoBehaviour
 {
     [SerializeField] PlayerController playerController;
 
+    public float[] ScanData;
+
     private void Update()
     {
         transform.right = (playerController.Direction).normalized;
@@ -37,6 +39,8 @@ public class ToolScanner : MonoBehaviour
                 airScan.Add(0.9f);
             }
         }
+
+        ScanData = airScan.ToArray();
 
         for (int i = 0; i < 31; i++)
         {
