@@ -13,12 +13,21 @@ public class ToolScannerUI : MonoBehaviour
 
         if (data != null)
         {
-            int length = data.Length;
+            int resolution = 8;
+            int length = data.Length * resolution;
             lineRenderer.points.Clear();
+
+            float y = 0;
 
             for (int i = 0; i < length; i++)
             {
-                lineRenderer.points.Add(new Vector2(i / (float)length, data[i]));
+                float x = i / (float)length;
+                float yBaseNoise = 1 + (Mathf.Sin(x * 17f)) * 0.05f;
+                float yNoise1 = Mathf.Sin(x * 37f + Time.time * 23f);
+                float yNoise2 = -Mathf.Sin(x * 21f + -Time.time * 31f);
+                float yNoiseScale = (0.5f + (1 - (Mathf.Abs(0.5f - data[i / resolution])))) * 0.01f;
+                y = Mathf.MoveTowards(y, data[i / resolution] * yBaseNoise, 0.01f) + yNoise1 * yNoiseScale + yNoise2 * yNoiseScale;
+                lineRenderer.points.Add(new Vector2(x, y));
             }
 
             lineRenderer.SetAllDirty();

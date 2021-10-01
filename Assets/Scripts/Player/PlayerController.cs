@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
         if (groundInFront && !obstacleInFront)
         {
             Debug.DrawRay(ray.origin, ray.direction, Color.green);
-            transform.position = Vector3.SmoothDamp(transform.position, transform.position + targetDir, ref velocity, Time.deltaTime * accelerationMultiplier, maxSpeed);
+            transform.position = Vector3.SmoothDamp(transform.position, transform.position + targetDir, ref velocity, Time.deltaTime * accelerationMultiplier, maxSpeed * Direction.magnitude);
         }
         else
         {
